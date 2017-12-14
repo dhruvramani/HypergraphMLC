@@ -4,6 +4,7 @@ import tensorflow as tf
 import scipy.sparse as sp
 
 batch_size, feature_dim, label_dim = 300, 200, 100
+'''
 def dense_layer(input, input_dim, output_dim, act=tf.nn.relu, dropout=0.8):
     W = tf.Variable(tf.random_normal(shape=[input_dim, output_dim]))
     b = tf.Variable(tf.random_normal(shape=[output_dim]))
@@ -20,8 +21,8 @@ def hypergraph(labels):
     #sum_1 = tf.expand_dims(tf.reduce_sum(labels, axis=1), 0)
     #edgesDiag = tf.multiply(sum_0, edgesDiag)
     #vertexDiag = tf.multiply(sum_1, vertexDiag)
-
-def dot(x, y, sparse=True):
+'''
+def dot(x, y, sparse=False):
     """Wrapper for tf.matmul (sparse vs dense)."""
     if sparse:
         res = tf.sparse_tensor_dense_matmul(x, y)
@@ -47,7 +48,7 @@ def hypergraph(labels):
     vertexDiag = tf.multiply(sum_1, vertexDiag)
     return incidence, weightDiag, edgesDiag, vertexDiag
 
-def get_symm_normalized_laplcian(labels):
+def get_lap(labels):
     H, W, De, Dv = hypergraph(labels)
     L = tf.eye(labels.get_shape().as_list()[0]) - dot(tf.sqrt(tf.reciprocal(Dv)), dot(H, dot(tf.matrix_inverse(De), dot(tf.transpose(H), tf.sqrt(tf.reciprocal(Dv))))))
     return L
@@ -55,11 +56,12 @@ def get_symm_normalized_laplcian(labels):
 def model():
     X = tf.placeholder(tf.float32, shape=[batch_size, feature_dim])
     Y = tf.placeholder(tf.float32, shape=[batch_size, label_dim])
+    laps = tf.placeholder(tf.float32, shape=[batch_size, batch_size]) 
 
     Wx1 = tf.Variable(tf.random_normal(shape=[feature_dim, 300]))
     bx1 = tf.Variable(tf.random_normal(shape=[300]))
     Wx2 = tf.Variable(tf.random_normal(shape=[300, 100]))
-    bx2 = tf.Variable(tf.random_normal(shape=[100]))
+    bx2 = tf.Variable(tf.random_normal(shape=[100])) 
 
     Wy1 = tf.Variable(tf.random_normal(shape=[label_dim, 300]))
     by1 = tf.Variable(tf.random_normal(shape=[300]))
@@ -85,3 +87,17 @@ def model():
     hhy2 = dot(hhy1, Wh2) + bh2
 
     loss1 = ce_loss(hhx2, Y) + ce_loss(hhy2, Y)
+    loss2 = dot(dot(tf.transpose(hxe), laps), hxe)
+    loss3 = dot(dot(tf.transpose(hye), laps), hye)
+
+    loss = loss1 + loss2 + loss3
+    train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
+
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+        for _ in range(1000):
+            x_train, y_train = get_batch("train")
+            laplacian = get_lap(y_train)
+            pl, _ = sess.run([loss, train], feed_dict={X: x_train, Y: y_train, laps: laplacian})
+            print("Loss : {}".format(pl), end='\r')
+    
