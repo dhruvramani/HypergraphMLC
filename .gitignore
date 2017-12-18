@@ -1,4 +1,6 @@
 data/
+/new/data
+/new/tensorboard
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

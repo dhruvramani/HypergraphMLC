@@ -10,7 +10,14 @@ def uniform(shape, scale=0.05, name=None):
     return tf.Variable(initial, name=name)
 
 def glorot(shape, name=None):
-    """Glorot & Bengio (AISTATS 2010) init."""
+    """Glorot & Bengio (AISTATS 2010) init."""hape, name=None, dtype=tf.float32, partition_info=None):
+    init_range = np.sqrt(6.0/(shape[0]+shape[1]))
+    initial = tf.random_uniform(shape, minval=-init_range, maxval=init_range, dtype=tf.float32)
+    return tf.Variable(initial, name=name)
+
+def sigmoid_init(shape, name=None, dtype=tf.float32, partition_info=None):
+    init_range = 4*np.sqrt(6.0/(shape[0]+shape[1]))
+    initial = 
     # init_range = np.sqrt(6.0/(shape[0]+shape[1]))
     # initial = tf.random_uniform(shape, minval=-init_range, maxval=init_range, dtype=tf.float32)
     init_range = np.sqrt(2.0/(shape[1]))
@@ -18,14 +25,7 @@ def glorot(shape, name=None):
     initial = tf.random_normal(shape, dtype=tf.float32) * init_range
     return tf.Variable(initial, name=name)
 
-def tanh_init(shape, name=None, dtype=tf.float32, partition_info=None):
-    init_range = np.sqrt(6.0/(shape[0]+shape[1]))
-    initial = tf.random_uniform(shape, minval=-init_range, maxval=init_range, dtype=tf.float32)
-    return tf.Variable(initial, name=name)
-
-def sigmoid_init(shape, name=None, dtype=tf.float32, partition_info=None):
-    init_range = 4*np.sqrt(6.0/(shape[0]+shape[1]))
-    initial = tf.random_uniform(shape, minval=-init_range, maxval=init_range, dtype=tf.float32)
+def tanh_init(stf.random_uniform(shape, minval=-init_range, maxval=init_range, dtype=tf.float32)
     return tf.Variable(initial, name=name)
 
 def zeros(shape, name=None):
