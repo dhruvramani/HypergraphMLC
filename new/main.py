@@ -34,7 +34,7 @@ def hypergraph(np_labels):
     edgesDiag = sp.eye((np_labels.shape[0]))
     vertexDiag = sp.eye((np_labels.shape[1]))
     sum_0 = sp.csr_matrx(sp.csr_matrix.sum(labels, axis=0))
-    sum_1 = sp.csr_matrix(tf.reduce_sum(labels, axis=1))
+    sum_1 = sp.csr_matrix(sp.csr_matrix.sum(labels, axis=1))
     edgesDiag = sp.csr_matrix.multiply(sum_0, edgesDiag)
     vertexDiag = sp.csr_matrix.multiply(sum_1, vertexDiag)
     return incidence, weightDiag, edgesDiag, vertexDiag
