@@ -4,7 +4,7 @@ import tensorflow as tf
 import scipy.sparse as sp
 from dataset import DataSet
 
-batch_size, feature_dim, label_dim = 300, 500, 983
+no_epoch, batch_size, feature_dim, label_dim = 1000, 300, 500, 983
 def dot(x, y, sparse=True):
     if sparse:
         res = tf.sparse_tensor_dense_matmul(x, y)
@@ -107,7 +107,7 @@ def model():
         sess.run(tf.global_variables_initializer())
         saver = tf.train.Saver()
         writer = tf.summary.FileWriter("./tensorboard", sess.graph)
-        for epoch in range(1000):
+        for epoch in range(no_epoch):
             el, c = 0.0, 0
             dataobj = DataSet("./data/delicious/delicious-train", batch_size)
             for x_train, y_train, dummy in dataobj.next_batch("train", sparse=True):
