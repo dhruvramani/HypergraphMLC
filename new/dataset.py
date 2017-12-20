@@ -45,7 +45,7 @@ class DataSet(object):
             X, Y = self.test
         return X, Y
 
-    def next_batch(self, data, sparse=False):
+    def next_batch(self, data, sparse_features=True, sparse_labels=False):
         if data.lower() not in ["train", "test", "validation"]:
             raise ValueError
         func = {"train" : self.get_train, "test": self.get_test, "validation": self.get_validation}[data.lower()]
@@ -57,8 +57,9 @@ class DataSet(object):
             end = min(start + batch_size, total)
             x = X[start : end, :]
             y = Y[start : end, :]
-            if(sparse):
+            if(sparse_features):
                 x = sp.csr_matrix(x)
+            if(sparse_labels):
                 y = sp.csr_matrix(y)
             start += 1
             yield (x, y, int(total))

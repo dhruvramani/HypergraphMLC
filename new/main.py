@@ -22,7 +22,7 @@ def get_sparse_props(spmatrix):
     indices = list()
     prop = sp.find(spmatrix)
     for i in range(prop[0].shape[0]):
-        indices.append(np.array([prop[1][i], prop[0][i]]))
+        indices.append(np.array([prop[0][i], prop[1][i]]))
     indices = np.array(indices)
     values = prop[2]
     shape = spmatrix.shape
@@ -105,12 +105,13 @@ def model():
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
+        sess.run(tf.tf.local_variables_initializer())
         saver = tf.train.Saver()
         writer = tf.summary.FileWriter("./tensorboard", sess.graph)
         for epoch in range(no_epoch):
             el, c = 0.0, 0
             dataobj = DataSet("./data/delicious/delicious-train", batch_size)
-            for x_train, y_train, dummy in dataobj.next_batch("train", sparse=True):
+            for x_train, y_train, dummy in dataobj.next_batch("train", sparse_features=True, sparse_labels=False):
                 laplacian = get_lap(y_train)
                 x_props, y_props, l_props = get_sparse_props(x_train), get_sparse_props(y_train), get_sparse_props(laplacian)
                 feed = {X_indices : x_props[0], X_data : x_props[1], X_shape : x_props[2], Y_indices : y_props[0], Y_data : y_props[1], Y_shape : y_props[2], L_indices : l_props[0], L_data : l_props[1], L_shape : l_props[2]}
