@@ -57,6 +57,7 @@ def model():
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
+        sess.run(tf.local_variables_initializer())
         for epoch in range(200):
             el, c = 0.0, 0
             dataobj = DataSet("./data/delicious/delicious-train", batch_size)

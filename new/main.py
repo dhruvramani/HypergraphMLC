@@ -105,7 +105,7 @@ def model():
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        sess.run(tf.tf.local_variables_initializer())
+        sess.run(tf.local_variables_initializer())
         saver = tf.train.Saver()
         writer = tf.summary.FileWriter("./tensorboard", sess.graph)
         for epoch in range(no_epoch):
