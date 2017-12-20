@@ -4,8 +4,8 @@ import tensorflow as tf
 import scipy.sparse as sp
 from dataset import DataSet
 
-batch_size, feature_dim, label_dim = 300, 200, 100
-def dot(x, y, sparse=False):
+batch_size, feature_dim, label_dim = 300, 500, 983
+def dot(x, y, sparse=True):
     if sparse:
         res = tf.sparse_tensor_dense_matmul(x, y)
     else:
