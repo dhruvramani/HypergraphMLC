@@ -36,8 +36,8 @@ def model():
     Y_data = tf.placeholder(tf.float32, name='Y_data', shape=None)
     Y_shape = tf.placeholder(tf.int64, name='Y_shape', shape=None)
 
-    X = tf.SparseTensor(indices=X_indices, values=X_data, shape=X_shape)
-    Y = tf.SparseTensor(indices=Y_indices, values=Y_data, shape=Y_shape)
+    X = tf.SparseTensor(indices=X_indices, values=X_data, dense_shape=X_shape)
+    Y = tf.SparseTensor(indices=Y_indices, values=Y_data, dense_shape=Y_shape)
 
     Wx1 = tf.Variable(tf.random_normal(shape=[feature_dim, 700]))
     bx1 = tf.Variable(tf.random_normal(shape=[700]))
@@ -46,13 +46,14 @@ def model():
 
     act = tf.nn.relu
     hx1 = act(dot(X, Wx1) + bx1)
-    hxe = dot(hx1, Wx2) + bx2
-    loss = ce_loss(hxe, Y)
-    patk = tf.metrics.sparse_precision_at_k(labels=Y, predictions=tf.nn.sigmoid(hxe), k=3)
+    hxe = dot(hx1, Wx2, sparse=False) + bx2
+    print(hxe.get_shape())
+    loss = ce_loss(hxe, tf.sparse_tensor_to_dense(Y))
+    patk = tf.metrics.sparse_precision_at_k(labels=tf.cast(Y, tf.int64), predictions=tf.nn.sigmoid(hxe), k=3)
 
     train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
 
-     with tf.Session() as sess:
+    with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         for epoch in range(200):
             el, c = 0.0, 0
@@ -70,4 +71,6 @@ def model():
             feed = {X_indices : x_props[0], X_data : x_props[1], X_shape : x_props[2], Y_indices : y_props[0], Y_data : y_props[1], Y_shape : y_props[2]}
             pk = sess.run(patk, feed_dict=feed)
             print("Epoch #{} Loss : {}, P@K : {}".format(epoch, el/c, pk))
-        
+
+if __name__ == "__main__":
+    model()

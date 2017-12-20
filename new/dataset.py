@@ -1,6 +1,6 @@
 import arff
 import numpy as np
-import scipt.sparse as sp
+import scipy.sparse as sp
 
 class DataSet(object):
     def __init__(self, path, batch_size):
@@ -12,7 +12,7 @@ class DataSet(object):
         data = np.load(path)
         if noise == True :
             data = data + np.random.normal(0, 0.001, data.shape)
-        return data
+        return data.astype('float32')
 
     def get_train(self):
         if self.train == None:

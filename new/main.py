@@ -5,7 +5,7 @@ import scipy.sparse as sp
 from dataset import DataSet
 
 no_epoch, batch_size, feature_dim, label_dim = 1000, 300, 500, 983
-def dot(x, y, sparse=True):
+def dot(x, y, sparse=False):
     if sparse:
         res = tf.sparse_tensor_dense_matmul(x, y)
     else:
@@ -58,9 +58,9 @@ def model():
     L_data = tf.placeholder(tf.float32, name='L_data', shape=None)
     L_shape = tf.placeholder(tf.int64, name='L_shape', shape=None)
 
-    X = tf.SparseTensor(indices=X_indices, values=X_data, shape=X_shape)
-    Y = tf.SparseTensor(indices=Y_indices, values=Y_data, shape=Y_shape)
-    laps = tf.SparseTensor(indices=L_indices, values=L_data, shape=L_shape)
+    X = tf.SparseTensor(indices=X_indices, values=X_data, dense_shape=X_shape)
+    Y = tf.SparseTensor(indices=Y_indices, values=Y_data, dense_shape=Y_shape)
+    laps = tf.SparseTensor(indices=L_indices, values=L_data, dense_shape=L_shape)
 
     Wx1 = tf.Variable(tf.random_normal(shape=[feature_dim, 300]))
     bx1 = tf.Variable(tf.random_normal(shape=[300]))
@@ -78,10 +78,10 @@ def model():
     bh2 = tf.Variable(tf.random_normal(shape=[label_dim]))
 
     act = tf.nn.relu
-    hx1 = act(dot(X, Wx1) + bx1)
+    hx1 = act(dot(X, Wx1, True) + bx1)
     hxe = act(dot(hx1, Wx2) + bx2)
     
-    hy1 = act(dot(Y, Wy1) + by1)
+    hy1 = act(dot(Y, Wy1, True) + by1)
     hye = act(dot(hy1, Wy2) + by2)
    
     hhx1 = act(dot(hxe, Wh1) + bh1)
