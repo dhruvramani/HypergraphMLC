@@ -110,7 +110,7 @@ def model():
         for epoch in range(1000):
             el, c = 0.0, 0
             dataobj = DataSet("./data/delicious/delicious-train", batch_size)
-            for x_train, y_train, dummy in dataobj.next_batch("train"):
+            for x_train, y_train, dummy in dataobj.next_batch("train", sparse=True):
                 laplacian = get_lap(y_train)
                 x_props, y_props, l_props = get_sparse_props(x_train), get_sparse_props(y_train), get_sparse_props(laplacian)
                 feed = {X_indices : x_props[0], X_data : x_props[1], X_shape : x_props[2], Y_indices : y_props[0], Y_data : y_props[1], Y_shape : y_props[2], L_indices : l_props[0], L_data : l_props[1], L_shape : l_props[2]}

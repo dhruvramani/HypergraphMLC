@@ -45,7 +45,7 @@ class DataSet(object):
             X, Y = self.test
         return X, Y
 
-    def next_batch(self, data):
+    def next_batch(self, data, sparse=False):
         if data.lower() not in ["train", "test", "validation"]:
             raise ValueError
         func = {"train" : self.get_train, "test": self.get_test, "validation": self.get_validation}[data.lower()]
@@ -55,7 +55,10 @@ class DataSet(object):
         total = int(len(X)/ batch_size) # fix the last batch
         while start < total:
             end = min(start + batch_size, total)
-            x = sp.csr_matrix(X[start : end, :])
-            y = sp.csr_matrix(Y[start : end, :])
+            x = X[start : end, :]
+            y = Y[start : end, :]
+            if(sparse):
+                x = sp.csr_matrix(x)
+                y = sp.csr_matrix(y)
             start += 1
             yield (x, y, int(total))
