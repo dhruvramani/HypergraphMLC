@@ -1,0 +1,247 @@
+Extracting /datasets/data2/MNIST/data/train-images-idx3-ubyte.gz
+Extracting /datasets/data2/MNIST/data/train-labels-idx1-ubyte.gz
+Extracting /datasets/data2/MNIST/data/t10k-images-idx3-ubyte.gz
+Extracting /datasets/data2/MNIST/data/t10k-labels-idx1-ubyte.gz
+2017-12-01 16:10:43.542318: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-12-01 16:10:43.542350: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-12-01 16:10:43.542358: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-12-01 16:10:43.542365: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-12-01 16:10:43.542371: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+2017-12-01 16:10:46.026593: I tensorflow/core/common_runtime/gpu/gpu_device.cc:955] Found device 0 with properties: 
+name: Tesla K40c
+major: 3 minor: 5 memoryClockRate (GHz) 0.745
+pciBusID 0000:83:00.0
+Total memory: 11.17GiB
+Free memory: 11.10GiB
+2017-12-01 16:10:46.026643: I tensorflow/core/common_runtime/gpu/gpu_device.cc:976] DMA: 0 
+2017-12-01 16:10:46.026655: I tensorflow/core/common_runtime/gpu/gpu_device.cc:986] 0:   Y 
+2017-12-01 16:10:46.026671: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1045] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Tesla K40c, pci bus id: 0000:83:00.0)
+Initialized!
+Step 0 (epoch 0.00), 39.9 ms
+Minibatch loss: 8.334, learning rate: 0.010000
+Minibatch error: 85.9%
+Validation error: 84.6%
+Step 100 (epoch 0.12), 16.7 ms
+Minibatch loss: 3.241, learning rate: 0.010000
+Minibatch error: 4.7%
+Validation error: 7.0%
+Step 200 (epoch 0.23), 17.0 ms
+Minibatch loss: 3.340, learning rate: 0.010000
+Minibatch error: 10.9%
+Validation error: 4.4%
+Step 300 (epoch 0.35), 16.7 ms
+Minibatch loss: 3.127, learning rate: 0.010000
+Minibatch error: 3.1%
+Validation error: 3.2%
+Step 400 (epoch 0.47), 16.7 ms
+Minibatch loss: 3.193, learning rate: 0.010000
+Minibatch error: 7.8%
+Validation error: 2.8%
+Step 500 (epoch 0.58), 16.6 ms
+Minibatch loss: 3.153, learning rate: 0.010000
+Minibatch error: 4.7%
+Validation error: 2.4%
+Step 600 (epoch 0.70), 16.7 ms
+Minibatch loss: 3.136, learning rate: 0.010000
+Minibatch error: 3.1%
+Validation error: 2.3%
+Step 700 (epoch 0.81), 16.8 ms
+Minibatch loss: 2.953, learning rate: 0.010000
+Minibatch error: 0.0%
+Validation error: 2.0%
+Step 800 (epoch 0.93), 16.8 ms
+Minibatch loss: 3.027, learning rate: 0.010000
+Minibatch error: 6.2%
+Validation error: 2.1%
+Step 900 (epoch 1.05), 16.7 ms
+Minibatch loss: 2.879, learning rate: 0.009500
+Minibatch error: 0.0%
+Validation error: 1.6%
+Step 1000 (epoch 1.16), 16.4 ms
+Minibatch loss: 2.877, learning rate: 0.009500
+Minibatch error: 1.6%
+Validation error: 1.6%
+Step 1100 (epoch 1.28), 16.8 ms
+Minibatch loss: 2.844, learning rate: 0.009500
+Minibatch error: 1.6%
+Validation error: 1.5%
+Step 1200 (epoch 1.40), 16.5 ms
+Minibatch loss: 2.915, learning rate: 0.009500
+Minibatch error: 1.6%
+Validation error: 1.5%
+Step 1300 (epoch 1.51), 16.7 ms
+Minibatch loss: 2.789, learning rate: 0.009500
+Minibatch error: 0.0%
+Validation error: 1.5%
+Step 1400 (epoch 1.63), 16.8 ms
+Minibatch loss: 2.842, learning rate: 0.009500
+Minibatch error: 3.1%
+Validation error: 1.6%
+Step 1500 (epoch 1.75), 16.5 ms
+Minibatch loss: 2.864, learning rate: 0.009500
+Minibatch error: 4.7%
+Validation error: 1.3%
+Step 1600 (epoch 1.86), 16.6 ms
+Minibatch loss: 2.720, learning rate: 0.009500
+Minibatch error: 1.6%
+Validation error: 1.5%
+Step 1700 (epoch 1.98), 16.7 ms
+Minibatch loss: 2.657, learning rate: 0.009500
+Minibatch error: 0.0%
+Validation error: 1.6%
+Step 1800 (epoch 2.09), 16.6 ms
+Minibatch loss: 2.672, learning rate: 0.009025
+Minibatch error: 1.6%
+Validation error: 1.4%
+Step 1900 (epoch 2.21), 16.7 ms
+Minibatch loss: 2.636, learning rate: 0.009025
+Minibatch error: 1.6%
+Validation error: 1.3%
+Step 2000 (epoch 2.33), 16.9 ms
+Minibatch loss: 2.584, learning rate: 0.009025
+Minibatch error: 0.0%
+Validation error: 1.2%
+Step 2100 (epoch 2.44), 16.5 ms
+Minibatch loss: 2.594, learning rate: 0.009025
+Minibatch error: 1.6%
+Validation error: 1.1%
+Step 2200 (epoch 2.56), 16.8 ms
+Minibatch loss: 2.558, learning rate: 0.009025
+Minibatch error: 0.0%
+Validation error: 1.2%
+Step 2300 (epoch 2.68), 16.7 ms
+Minibatch loss: 2.578, learning rate: 0.009025
+Minibatch error: 1.6%
+Validation error: 1.3%
+Step 2400 (epoch 2.79), 16.9 ms
+Minibatch loss: 2.515, learning rate: 0.009025
+Minibatch error: 1.6%
+Validation error: 1.1%
+Step 2500 (epoch 2.91), 16.9 ms
+Minibatch loss: 2.475, learning rate: 0.009025
+Minibatch error: 0.0%
+Validation error: 1.0%
+Step 2600 (epoch 3.03), 16.5 ms
+Minibatch loss: 2.462, learning rate: 0.008574
+Minibatch error: 0.0%
+Validation error: 1.2%
+Step 2700 (epoch 3.14), 16.6 ms
+Minibatch loss: 2.501, learning rate: 0.008574
+Minibatch error: 1.6%
+Validation error: 1.0%
+Step 2800 (epoch 3.26), 16.6 ms
+Minibatch loss: 2.486, learning rate: 0.008574
+Minibatch error: 3.1%
+Validation error: 1.1%
+Step 2900 (epoch 3.37), 16.8 ms
+Minibatch loss: 2.536, learning rate: 0.008574
+Minibatch error: 3.1%
+Validation error: 1.1%
+Step 3000 (epoch 3.49), 16.7 ms
+Minibatch loss: 2.397, learning rate: 0.008574
+Minibatch error: 1.6%
+Validation error: 0.9%
+Step 3100 (epoch 3.61), 16.8 ms
+Minibatch loss: 2.390, learning rate: 0.008574
+Minibatch error: 3.1%
+Validation error: 1.0%
+Step 3200 (epoch 3.72), 16.5 ms
+Minibatch loss: 2.347, learning rate: 0.008574
+Minibatch error: 1.6%
+Validation error: 1.1%
+Step 3300 (epoch 3.84), 16.8 ms
+Minibatch loss: 2.314, learning rate: 0.008574
+Minibatch error: 0.0%
+Validation error: 1.0%
+Step 3400 (epoch 3.96), 16.7 ms
+Minibatch loss: 2.310, learning rate: 0.008574
+Minibatch error: 1.6%
+Validation error: 0.9%
+Step 3500 (epoch 4.07), 16.5 ms
+Minibatch loss: 2.297, learning rate: 0.008145
+Minibatch error: 1.6%
+Validation error: 0.9%
+Step 3600 (epoch 4.19), 16.7 ms
+Minibatch loss: 2.254, learning rate: 0.008145
+Minibatch error: 0.0%
+Validation error: 0.9%
+Step 3700 (epoch 4.31), 16.4 ms
+Minibatch loss: 2.229, learning rate: 0.008145
+Minibatch error: 0.0%
+Validation error: 1.0%
+Step 3800 (epoch 4.42), 16.6 ms
+Minibatch loss: 2.219, learning rate: 0.008145
+Minibatch error: 0.0%
+Validation error: 0.9%
+Step 3900 (epoch 4.54), 16.9 ms
+Minibatch loss: 2.238, learning rate: 0.008145
+Minibatch error: 3.1%
+Validation error: 0.9%
+Step 4000 (epoch 4.65), 16.4 ms
+Minibatch loss: 2.254, learning rate: 0.008145
+Minibatch error: 4.7%
+Validation error: 1.1%
+Step 4100 (epoch 4.77), 16.8 ms
+Minibatch loss: 2.165, learning rate: 0.008145
+Minibatch error: 0.0%
+Validation error: 0.9%
+Step 4200 (epoch 4.89), 16.8 ms
+Minibatch loss: 2.169, learning rate: 0.008145
+Minibatch error: 1.6%
+Validation error: 1.0%
+Step 4300 (epoch 5.00), 16.5 ms
+Minibatch loss: 2.154, learning rate: 0.007738
+Minibatch error: 0.0%
+Validation error: 1.0%
+Step 4400 (epoch 5.12), 16.6 ms
+Minibatch loss: 2.123, learning rate: 0.007738
+Minibatch error: 0.0%
+Validation error: 1.0%
+Step 4500 (epoch 5.24), 16.5 ms
+Minibatch loss: 2.172, learning rate: 0.007738
+Minibatch error: 4.7%
+Validation error: 0.9%
+Step 4600 (epoch 5.35), 16.4 ms
+Minibatch loss: 2.083, learning rate: 0.007738
+Minibatch error: 0.0%
+Validation error: 1.0%
+Step 4700 (epoch 5.47), 16.5 ms
+Minibatch loss: 2.062, learning rate: 0.007738
+Minibatch error: 0.0%
+Validation error: 0.9%
+Step 4800 (epoch 5.59), 16.7 ms
+Minibatch loss: 2.061, learning rate: 0.007738
+Minibatch error: 0.0%
+Validation error: 0.9%
+Step 4900 (epoch 5.70), 16.7 ms
+Minibatch loss: 2.065, learning rate: 0.007738
+Minibatch error: 3.1%
+Validation error: 1.0%
+Step 5000 (epoch 5.82), 16.4 ms
+Minibatch loss: 2.141, learning rate: 0.007738
+Minibatch error: 4.7%
+Validation error: 1.0%
+Step 5100 (epoch 5.93), 17.0 ms
+Minibatch loss: 2.007, learning rate: 0.007738
+Minibatch error: 0.0%
+Validation error: 0.9%
+Step 5200 (epoch 6.05), 16.6 ms
+Minibatch loss: 2.052, learning rate: 0.007351
+Minibatch error: 3.1%
+Validation error: 1.0%
+Step 5300 (epoch 6.17), 16.6 ms
+Minibatch loss: 1.969, learning rate: 0.007351
+Minibatch error: 0.0%
+Validation error: 0.9%
+Step 5400 (epoch 6.28), 16.9 ms
+Minibatch loss: 1.961, learning rate: 0.007351
+Minibatch error: 0.0%
+Validation error: 1.0%
+Step 5500 (epoch 6.40), 17.1 ms
+Minibatch loss: 1.985, learning rate: 0.007351
+Minibatch error: 1.6%
+Validation error: 1.0%
+Step 5600 (epoch 6.52), 17.3 ms
+Minibatch loss: 1.935, learning rate: 0.007351
+Minibatch error: 0.0%
+Validation error: 0.8%
