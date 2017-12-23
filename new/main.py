@@ -50,16 +50,18 @@ def model():
     X_data = tf.placeholder(tf.float32, name='X_data', shape=None)
     X_shape = tf.placeholder(tf.int64, name='X_shape', shape=None)
 
+    '''
     Y_indices = tf.placeholder(tf.int64, name='Y_indices', shape=None)
     Y_data = tf.placeholder(tf.float32, name='Y_data', shape=None)
     Y_shape = tf.placeholder(tf.int64, name='Y_shape', shape=None)
+    '''
 
     L_indices = tf.placeholder(tf.int64, name='L_indices', shape=None)
     L_data = tf.placeholder(tf.float32, name='L_data', shape=None)
     L_shape = tf.placeholder(tf.int64, name='L_shape', shape=None)
 
     X = tf.SparseTensor(indices=X_indices, values=X_data, dense_shape=X_shape)
-    Y = tf.SparseTensor(indices=Y_indices, values=Y_data, dense_shape=Y_shape)
+    Y = tf.placeholder(tf.float32, shape=[None, label_dim])
     laps = tf.SparseTensor(indices=L_indices, values=L_data, dense_shape=L_shape)
 
     Wx1 = tf.Variable(tf.random_normal(shape=[feature_dim, 300]))
@@ -81,7 +83,7 @@ def model():
     hx1 = act(dot(X, Wx1, True) + bx1)
     hxe = act(dot(hx1, Wx2) + bx2)
     
-    hy1 = act(dot(Y, Wy1, True) + by1)
+    hy1 = act(dot(Y, Wy1) + by1)
     hye = act(dot(hy1, Wy2) + by2)
    
     hhx1 = act(dot(hxe, Wh1) + bh1)
@@ -91,8 +93,8 @@ def model():
     hhy2 = dot(hhy1, Wh2) + bh2
 
     loss1 = ce_loss(hhx2, Y) + ce_loss(hhy2, Y)
-    loss2 = dot(dot(tf.transpose(hxe), laps), hxe)
-    loss3 = dot(dot(tf.transpose(hye), laps), hye)
+    loss2 = dot(tf.transpose(dot(tf.sparse_transpose(laps), hxe, True)), hxe)
+    loss3 = dot(tf.transpose(dot(tf.sparse_transpose(laps), hye, True)), hye)
 
     tf.scalar_summary("loss1", loss1)
     tf.scalar_summary("loss2", loss2)
@@ -101,6 +103,9 @@ def model():
     loss = loss1 + loss2 + loss3
     tf.scalar_summary("loss", loss)
     train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
+    pat3 = tf.metrics.sparse_precision_at_k(labels=tf.cast(Y, tf.int64), predictions=tf.nn.sigmoid(hhx2), k=3)
+
+
     merged = tf.summary.merge_all()
 
     with tf.Session() as sess:
@@ -111,14 +116,23 @@ def model():
         for epoch in range(no_epoch):
             el, c = 0.0, 0
             dataobj = DataSet("./data/delicious/delicious-train", batch_size)
-            for x_train, y_train, dummy in dataobj.next_batch("train", sparse_features=True, sparse_labels=False):
+            for x_train, y_train, dummy in dataobj.next_batch("train", sparse_features=True, sparse_labels=True):
                 laplacian = get_lap(y_train)
-                x_props, y_props, l_props = get_sparse_props(x_train), get_sparse_props(y_train), get_sparse_props(laplacian)
-                feed = {X_indices : x_props[0], X_data : x_props[1], X_shape : x_props[2], Y_indices : y_props[0], Y_data : y_props[1], Y_shape : y_props[2], L_indices : l_props[0], L_data : l_props[1], L_shape : l_props[2]}
+                y_train = sp.csr_matrix.todense(y_train)
+                x_props, l_props = get_sparse_props(x_train), get_sparse_props(laplacian)
+                feed = {X_indices : x_props[0], X_data : x_props[1], X_shape : x_props[2], Y : y_train, L_indices : l_props[0], L_data : l_props[1], L_shape : l_props[2]}
                 pl, _, summ = sess.run([loss, train, merged], feed_dict=feed)
                 el += pl
                 c += 1
                 print("Epoch #{} Loss : {}".format(epoch, pl), end='\r')
             saver.save(sess, './checkpoint/model.ckpt', global_step=c)
             writer.add_summary(summ, c)
-            print("Epoch #{} Loss : {}".format(epoch, el/c))
+            test_obj = DataSet("./data/delicious/delicious-test", 3185)
+            x_test, y_test = test_obj.get_test()
+            x_props, y_props = get_sparse_props(x_test), None #get_sparse_props(y_test)
+            feed = {X_indices : x_props[0], X_data : x_props[1], X_shape : x_props[2], Y : y_test} #Y_indices : y_props[0], Y_data : y_props[1], Y_shape : y_props[2]}
+            pk = sess.run(patk, feed_dict=feed)
+            output = "Epoch #{} Loss : {}, P@K : {}".format(epoch, el/c, pk)
+            with open("train_test.log", "a+") as f:
+                f.write(output)
+            print(output)

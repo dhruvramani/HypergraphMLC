@@ -73,7 +73,10 @@ def model():
             x_props, y_props = get_sparse_props(x_test), None #get_sparse_props(y_test)
             feed = {X_indices : x_props[0], X_data : x_props[1], X_shape : x_props[2], Y : y_test} #Y_indices : y_props[0], Y_data : y_props[1], Y_shape : y_props[2]}
             pk = sess.run(patk, feed_dict=feed)
-            print("Epoch #{} Loss : {}, P@K : {}".format(epoch, el/c, pk))
+            output = "Epoch #{} Loss : {}, P@K : {}".format(epoch, el/c, pk)
+            with open("train_test.log", "a+") as f:
+                f.write(output)
+            print(output)
 
 if __name__ == "__main__":
     model()
