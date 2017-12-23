@@ -8,8 +8,9 @@ source /tools/config.sh
 # Activate your environment
 source activate py35
 # Change to the directory in which your code is present
-cd /storage/home/priyesh/dhruv/HypergraphMLC/new
+cd /storage/home/dhruvr/HypergraphMLC/new
+
 # Run the code. The -u option is used here to use unbuffered writes
 # so that output is piped to the file as and when it is produced.
 # Here, the code is the MNIST Tensorflow example.
-python -u main.py  &> out
+python -u fnn.py  &> out
