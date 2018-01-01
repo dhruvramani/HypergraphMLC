@@ -2,6 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf
 import scipy.sparse as sp
+import scipy.sparse.linalg as la
 from dataset import DataSet
 
 no_epoch, batch_size, feature_dim, label_dim = 1000, 300, 500, 983
@@ -33,8 +34,9 @@ def hypergraph(np_labels):
     weightDiag = sp.eye(np_labels.shape[0])
     edgesDiag = sp.eye((np_labels.shape[0]))
     vertexDiag = sp.eye((np_labels.shape[1]))
-    sum_0 = sp.csr_matrx(sp.csr_matrix.sum(labels, axis=0))
-    sum_1 = sp.csr_matrix(sp.csr_matrix.sum(labels, axis=1))
+    sum_0 = sp.csr_matrix(sp.csr_matrix.sum(np_labels, axis=1))
+    sum_1 = sp.csr_matrix(sp.csr_matrix.sum(np_labels, axis=0))
+    print(sum_0.shape, edgesDiag.shape)
     edgesDiag = sp.csr_matrix.multiply(sum_0, edgesDiag)
     vertexDiag = sp.csr_matrix.multiply(sum_1, vertexDiag)
     return incidence, weightDiag, edgesDiag, vertexDiag
@@ -42,7 +44,7 @@ def hypergraph(np_labels):
 def get_lap(labels):
     H, W, De, Dv = hypergraph(labels)
     # I - Dv^(-1/2).H.De^(-1).Ht.Dv^(-1/2)
-    L = sp.eye(labels.shape[0]) - sp.csr_matrix.sqrt(sp.linalg.inv(Dv)).dot(H.dot(sp.linalg.inv(De).dot((H.T).dot(sp.csr_matrix.sqrt(sp.linalg.inv(Dv))))))
+    L = sp.eye(labels.shape[0]) - sp.csr_matrix.sqrt(la.inv(Dv)).dot(H.dot(la.inv(De).dot((H.T).dot(sp.csr_matrix.sqrt(la.inv(Dv))))))
     return L
 
 def model():
@@ -96,12 +98,12 @@ def model():
     loss2 = dot(tf.transpose(dot(tf.sparse_transpose(laps), hxe, True)), hxe)
     loss3 = dot(tf.transpose(dot(tf.sparse_transpose(laps), hye, True)), hye)
 
-    tf.scalar_summary("loss1", loss1)
-    tf.scalar_summary("loss2", loss2)
-    tf.scalar_summary("loss3", loss3)
+    tf.summary.scalar("loss1", loss1)
+    tf.summary.scalar("loss2", loss2)
+    tf.summary.scalar("loss3", loss3)
 
     loss = loss1 + loss2 + loss3
-    tf.scalar_summary("loss", loss)
+    tf.summary.scalar("loss", loss)
     train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
     pat3 = tf.metrics.sparse_precision_at_k(labels=tf.cast(Y, tf.int64), predictions=tf.nn.sigmoid(hhx2), k=3)
 
@@ -117,6 +119,7 @@ def model():
             el, c = 0.0, 0
             dataobj = DataSet("./data/delicious/delicious-train", batch_size)
             for x_train, y_train, dummy in dataobj.next_batch("train", sparse_features=True, sparse_labels=True):
+                print(y_train.shape)
                 laplacian = get_lap(y_train)
                 y_train = sp.csr_matrix.todense(y_train)
                 x_props, l_props = get_sparse_props(x_train), get_sparse_props(laplacian)
@@ -136,3 +139,6 @@ def model():
             with open("train_test.log", "a+") as f:
                 f.write(output)
             print(output)
+
+if __name__ == '__main__':
+    model()
